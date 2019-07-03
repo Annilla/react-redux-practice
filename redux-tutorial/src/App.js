@@ -2,12 +2,16 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import { connect } from 'react-redux';
-import { updateUser } from './actions/user-actions'
+import { updateUser, apiRequest } from './actions/user-actions'
 
 class App extends Component {
   constructor(props) {
     super(props);
     this.onUpdateUser = this.onUpdateUser.bind(this);
+  }
+
+  componentDidMount () {
+    this.props.onApiRequest();
   }
 
   onUpdateUser(event) {
@@ -42,13 +46,17 @@ class App extends Component {
   }
 }
 
-const mapStateToProps = state => ({
-  products: state.products,
-  user: state.user
-});
+const mapStateToProps = (state, props) => {
+  return {
+    products: state.products,
+    user: state.user,
+    userPlusProps: `${state.user} ${props.aRandomProps}`
+  }
+};
 
 const mapActionsToProps = {
-  onUpdateUser: updateUser
+  onUpdateUser: updateUser,
+  onApiRequest: apiRequest
 };
 
 export default connect(mapStateToProps, mapActionsToProps)(App);
